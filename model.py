@@ -138,7 +138,7 @@ class LSTM(object):
 
             # for i in range(x_test.shape[0]):
             contribution = pd.DataFrame()
-            for i in [0]:
+            for i in range(x_test.shape[0]):
                 temp_x_test = x_test[i]
                 # print(temp_x_test[0].shape)
                 # print(h_states[0].shape)
