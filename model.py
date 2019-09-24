@@ -138,7 +138,7 @@ class LSTM(object):
 
             # for i in range(x_test.shape[0]):
             contribution = pd.DataFrame()
-            for i in range(x_test.shape[0]):
+            for i in x_test.shape[0]:
                 temp_x_test = x_test[i]
                 # print(temp_x_test[0].shape)
                 # print(h_states[0].shape)
@@ -154,7 +154,7 @@ class LSTM(object):
 
                     c_states[t] = gates_act[t, idx_f] * c_states[t - 1] + gates_act[t, idx_i] * gates_act[t, idx_g]
                     # h_states[t] = gates_act[t, idx_o] * np.tanh(c_states[t])
-                    h_states[t] = states[0][t]
+                    h_states[t] = states[i][t]
                 y_dense = np.dot(W_dense.T, h_states[T - 1])[0]
                 # print('隐藏状态：')
                 # print('原始：', states[0])

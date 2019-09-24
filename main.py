@@ -45,19 +45,19 @@ for i in stocks_code:
     _, scaler_for_y_l, _, _ = dataset.get_minmaxscaler()  # 得到归一化参数
 
     model_LSTM = LSTM(time_step=time_step, hidden_size=[lstm_hidden_size], num_layers=1, learning_rate=learning_rate, batch_size=batch_size, input_features=input_features)
-    # model_LSTM.train(x_train, y_train, epochs, lstm_model_path, log_every_n, early_stop)
-    #
-    # y_hat_arr_l, y_labels_arr_l = model_LSTM.test(x_test, y_test, lstm_model_path)
-    # print("LSTM模型%s测试集上均方根误差为%f：" % (i, np.sqrt(np.mean(np.square(y_hat_arr_l - y_labels_arr_l)))))
-    # # 反归一化
-    # y_pre_re_l = y_hat_arr_l * (scaler_for_y_l.data_max_ - scaler_for_y_l.data_min_) + scaler_for_y_l.data_min_
-    # y_test_labels_re_l = y_labels_arr_l * (
-    #         scaler_for_y_l.data_max_ - scaler_for_y_l.data_min_) + scaler_for_y_l.data_min_
-    # test_basic_time.reset_index(drop=True, inplace=True)
-    # data = pd.concat([pd.DataFrame(test_basic_time), pd.DataFrame(y_pre_re_l), pd.DataFrame(y_test_labels_re_l)],
-    #                  axis=1)
-    # data.columns = ['时间', '预测值', '真实值']
-    # data.to_csv('./data/prediction/' + i + '.csv', index=False, encoding='utf_8_sig')
+    model_LSTM.train(x_train, y_train, epochs, lstm_model_path, log_every_n, early_stop)
+
+    y_hat_arr_l, y_labels_arr_l = model_LSTM.test(x_test, y_test, lstm_model_path)
+    print("LSTM模型%s测试集上均方根误差为%f：" % (i, np.sqrt(np.mean(np.square(y_hat_arr_l - y_labels_arr_l)))))
+    # 反归一化
+    y_pre_re_l = y_hat_arr_l * (scaler_for_y_l.data_max_ - scaler_for_y_l.data_min_) + scaler_for_y_l.data_min_
+    y_test_labels_re_l = y_labels_arr_l * (
+            scaler_for_y_l.data_max_ - scaler_for_y_l.data_min_) + scaler_for_y_l.data_min_
+    test_basic_time.reset_index(drop=True, inplace=True)
+    data = pd.concat([pd.DataFrame(test_basic_time), pd.DataFrame(y_pre_re_l), pd.DataFrame(y_test_labels_re_l)],
+                     axis=1)
+    data.columns = ['时间', '预测值', '真实值']
+    data.to_csv('./data/prediction/' + i + '.csv', index=False, encoding='utf_8_sig')
 
     # LRP
     contribution = model_LSTM.lrp(x_test, lstm_model_path, eps, bias_factor)
